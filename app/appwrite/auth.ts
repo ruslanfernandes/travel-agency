@@ -1,7 +1,7 @@
-import { ID, OAuthProvider, Query } from "appwrite";
+import { ID, OAuthProvider, Query, type Models } from "appwrite";
 import { account, database, appwriteConfig } from "~/appwrite/client";
 import { redirect } from "react-router";
-
+/*getExistingUser function is used to prelaod data from laoder function*/
 export const getExistingUser = async (id: string) => {
   try {
     const { documents, total } = await database.listDocuments(
@@ -16,9 +16,10 @@ export const getExistingUser = async (id: string) => {
   }
 };
 
-export const storeUserData = async () => {
+export const storeUserData = async (user: Models.User<Models.Preferences>) => {
   try {
-    const user = await account.get();
+    // CREATE NEW USER
+    // const user = await account.get();
     if (!user) throw new Error("User not found");
 
     const { providerAccessToken } = (await account.getSession("current")) || {};
@@ -34,14 +35,15 @@ export const storeUserData = async () => {
         accountId: user.$id,
         email: user.email,
         name: user.name,
-        imageUrl: profilePicture,
+        imageUrl: profilePicture || "",
         joinedAt: new Date().toISOString(),
       }
     );
 
-    if (!createdUser.$id) redirect("/sign-in");
+    return createdUser;
   } catch (error) {
     console.error("Error storing user data:", error);
+    return null;
   }
 };
 
@@ -63,21 +65,12 @@ const getGooglePicture = async (accessToken: string) => {
 
 export const loginWithGoogle = async () => {
   try {
-    account.createOAuth2Session(
-      OAuthProvider.Google,
-      `${window.location.origin}/`,
-      `${window.location.origin}/404`
-    );
+    const redirectUrl = `${window.location.origin}/auth-callback`; // after success
+    const failureUrl = `${window.location.origin}/sign-in`; // if cancelled/fail
+
+    account.createOAuth2Session(OAuthProvider.Google, redirectUrl, failureUrl);
   } catch (error) {
     console.error("Error during OAuth2 session creation:", error);
-  }
-};
-
-export const logoutUser = async () => {
-  try {
-    await account.deleteSession("current");
-  } catch (error) {
-    console.error("Error during logout:", error);
   }
 };
 
@@ -99,5 +92,30 @@ export const getUser = async () => {
   } catch (error) {
     console.error("Error fetching user:", error);
     return null;
+  }
+};
+
+export const logoutUser = async () => {
+  try {
+    await account.deleteSession("current");
+  } catch (error) {
+    console.error("Error during logout:", error);
+  }
+};
+
+export const getAllUsers = async (limit: number, offset: number) => {
+  try {
+    const { documents: users, total } = await database.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      [Query.limit(limit), Query.offset(offset)]
+    );
+
+    if (total === 0) return { users: [], total };
+
+    return { users, total };
+  } catch (e) {
+    console.log("Error fetching users");
+    return { users: [], total: 0 };
   }
 };

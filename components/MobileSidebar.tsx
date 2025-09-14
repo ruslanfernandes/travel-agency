@@ -11,7 +11,7 @@ const MobileSidebar = () => {
       <header>
         <Link to="/">
           <img src="/assets/icons/logo.svg" alt="" className="size-[25px]" />
-          <h1>Soul Travelling</h1>
+          <h1>Travell</h1>
         </Link>
 
         {/* //MENU ICON */}

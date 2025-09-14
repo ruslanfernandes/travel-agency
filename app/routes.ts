@@ -1,8 +1,13 @@
 import { type RouteConfig, layout, route } from "@react-router/dev/routes";
 
 export default [
-    layout('routes/admin/admin-layout.tsx',[
-        route('dashboard', 'routes/admin/dashboard.tsx'),
-        route('all-users', 'routes/admin/all-users.tsx')
-    ]
-    )] satisfies RouteConfig;
+  route("/", "routes/home.tsx"),
+  route("sign-in", "routes/root/sign-in.tsx"),
+  route("auth-callback", "routes/root/auth-callback.tsx"),
+  layout("routes/admin/admin-layout.tsx", [
+    route("dashboard", "routes/admin/dashboard.tsx"),
+    route("all-users", "routes/admin/all-users.tsx"),
+    route("trips", "routes/admin/trips.tsx"),
+    route("trips/create", "routes/admin/create-trip.tsx"),
+  ]),
+] satisfies RouteConfig;
