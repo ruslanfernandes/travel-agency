@@ -6,49 +6,18 @@ import {
   storeUserData,
 } from "~/appwrite/auth";
 import { account, appwriteConfig, database } from "~/appwrite/client";
-import { ID } from "appwrite";
 
 export async function clientLoader() {
   try {
     const user = await account.get();
-    const existingUser = await getExistingUser(user.$id);
-    if (existingUser?.status === "user") {
-      return redirect("/");
-    }
+    if (user.$id) return redirect("/");
   } catch (e: any) {
-    if (e?.code === 401) {
-      // Not logged in → allow rendering of SignIn page
-      console.error("Sign-in page error", e);
-      return null;
-    }
     console.error("Unexpected error fetching user:", e);
     return null;
   }
 }
 
 const SignIn = () => {
-  async function insertDummyUser() {
-    try {
-      const newUser = await database.createDocument(
-        appwriteConfig.databaseId,
-        appwriteConfig.userCollectionId,
-        ID.unique(), // unique id for the document
-        {
-          name: "Test User",
-          email: "test@example.com",
-          accountId: "dummy123",
-          imageUrl: "https://i.pravatar.cc/150?u=dummy123",
-          joinedAt: new Date().toISOString(),
-        }
-      );
-      console.log("Dummy user inserted:", newUser);
-      return newUser;
-    } catch (error) {
-      console.error("Error inserting dummy user:", error);
-      throw error;
-    }
-  }
-
   return (
     <main className="auth">
       <section className="size-full glassmorphism flex-center px-6">
@@ -75,14 +44,14 @@ const SignIn = () => {
             </p>
           </article>
 
-          <ButtonComponent
+          {/* <ButtonComponent
             type="button"
             iconCss="e-search-icon"
             className="button-class !h-11 !w-full"
             onClick={insertDummyUser}
           >
             Dummy
-          </ButtonComponent>
+          </ButtonComponent> */}
 
           <ButtonComponent
             type="button"

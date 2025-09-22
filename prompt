@@ -1,0 +1,50 @@
+i have to build this project for an interview . You are a senior fullstack developer with 10+ years of experience. Help me/ guide me/mentor me so that i can build the project in 4 hours.
+i am listing down my tech stack that i want to use to build this project. Let me know if its workable since i have used them before.
+
+1. reactjs
+2. Tailwind css but i need to use SASS which i havent learnt before
+3. Synfusion Components
+4. React router
+5. TypeScript for type safety
+
+i want to implement the project. Im planning to:
+
+- use synfusion components for the seach bar, and the 3 dropdowns(department,location, functionality). Usestate to store all the above data. {searchInput: '', department: '' , location: '', function: '' }. Implement a interface for the shape of the usestate.
+- Use react routerv7 to make an api route to fetch the data from the api.
+- use the loader from react router to prefetch data. so when the user clicks on the search icon (submit button)
+  a) a session storage is created of the state and stored in session storage
+  b) when the page/component first loads it accesses the loader from react router to acess the session storage if it exists and then populate the Listing Component (basically there will be 2 main routes/ Pages
+
+1. SearhJobs.tsx
+2. JobDetails.tsx
+
+The session storage must be fetched using the react loader for both the routes.
+
+Inside SeachJobs.tsx there willl be 3 main components
+
+1.  Input Component for getting the form data
+2.  ListComponent for displaying the prefetched data from the loader i.e department,location and guide to display the
+    2a. FiltersComponent- display the filters as chips with X to delete filter i.e delete that filter from the sessionStorage and also a clear all button to clear all of the session storage.  
+    2b. DisplayJobsComponent that shows all the jobs for that Department ex.
+    < Header tittle={Department_name} />
+    <ListComponent dataSource ={filteredByDepartment_obj}
+    map through the data recieved for the query done. The loader of the SearchJobs.tsx does this querry. This querry basically accesses the sessionstorage and acceses the department value and gives back all the jobs via fetch (${baseUrl}/api/v1/jobs) and filter out all jobs with department=value accessed from session storage. this data is taken from the loader and accessed inside the SearchJobs.tsx and passed to the DisplayJobsComponent via props.
+    this.
+
+Maintain a file for a list of functions used for fetching data from the api example: getDepartmentJobs(
+example of dynamic url `https://demo.jobsoid.com/api/v1/jobs?dept=${5013}&loc=x&fun=y`. use urlsearch params to access it and store the data inside datasource
+This datasource is mapped over by ListComponent and individual List components are displayed. Use import {
+ColumnsDirective,
+GridComponent,
+ColumnDirective,
+} from "@syncfusion/ej2-react-grids";
+
+Each item in list is made up of <ListItem><DepartmentHeadingComponent name='Quality asurance' /><subListItem1  /><subListItem2 /> </ListItem>
+each subListItem1 will display their data and also view button to take to jobdetails page and apply button from api response. upon clicking the view button the url will be populated with the job id of the clicked subListItem
+
+2. JobDetails.tsx
+   the loader will take the id from the url and fetch the job as well as an jobs from the same department
+   job = take id from url and get job_object
+   Query(job_object.department) to get all jobs within same department.
+
+   this is my overall plan. in my next response i will type the details of the job opening along with screenshots of the images for the ui. if all of this is okay say 'understood' else you can ask me any questions before i start writing about the project description

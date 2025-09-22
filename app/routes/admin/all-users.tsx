@@ -1,19 +1,18 @@
-import { Header } from "../../../components";
+import { Header } from "components";
 import {
   ColumnsDirective,
-  ColumnDirective,
   GridComponent,
+  ColumnDirective,
 } from "@syncfusion/ej2-react-grids";
+
 import { cn, formatDate } from "~/lib/utils";
 import { getAllUsers } from "~/appwrite/auth";
 import type { Route } from "./+types/all-users";
 
 export const loader = async () => {
   const { users, total } = await getAllUsers(10, 0);
-
   return { users, total };
 };
-
 const AllUsers = ({ loaderData }: Route.ComponentProps) => {
   const { users } = loaderData;
 
@@ -23,7 +22,7 @@ const AllUsers = ({ loaderData }: Route.ComponentProps) => {
         title="Manage Users"
         description="Filter, sort, and access detailed user profiles"
       />
-
+      {/* //users is an array of objs */}
       <GridComponent dataSource={users} gridLines="None">
         <ColumnsDirective>
           <ColumnDirective
@@ -37,15 +36,14 @@ const AllUsers = ({ loaderData }: Route.ComponentProps) => {
                   src={props.imageUrl}
                   alt="user"
                   className="rounded-full size-8 aspect-square"
-                  referrerPolicy="no-referrer"
                 />
                 <span>{props.name}</span>
               </div>
             )}
-          />
+          />{" "}
           <ColumnDirective
             field="email"
-            headerText="Email Address"
+            headerText="Email"
             width="200"
             textAlign="Left"
           />
@@ -92,4 +90,5 @@ const AllUsers = ({ loaderData }: Route.ComponentProps) => {
     </main>
   );
 };
+
 export default AllUsers;

@@ -3,6 +3,7 @@ import { type RouteConfig, layout, route } from "@react-router/dev/routes";
 export default [
   route("/", "routes/home.tsx"),
   route("sign-in", "routes/root/sign-in.tsx"),
+  route("api/create-trip", "routes/api/create-trip.ts"),
   route("auth-callback", "routes/root/auth-callback.tsx"),
   layout("routes/admin/admin-layout.tsx", [
     route("dashboard", "routes/admin/dashboard.tsx"),

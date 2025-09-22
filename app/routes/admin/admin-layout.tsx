@@ -3,7 +3,7 @@ import { SidebarComponent } from "@syncfusion/ej2-react-navigations";
 import { MobileSidebar, NavItems } from "../../../components";
 import { account } from "~/appwrite/client";
 import { getExistingUser, storeUserData } from "~/appwrite/auth";
-
+//clientLoader() returns user if exists in DB
 export async function clientLoader() {
   try {
     const user = await account.get();
