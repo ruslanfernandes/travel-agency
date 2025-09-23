@@ -542,3 +542,6 @@ body {
   top: 45px;
   right: 40px;
 }
+.e-chip.my-chip {
+  background-color: transparent !important; /* remove Syncfusion's default */
+}
