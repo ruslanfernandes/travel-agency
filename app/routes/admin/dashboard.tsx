@@ -21,6 +21,11 @@ import {
   Tooltip,
 } from "@syncfusion/ej2-react-charts";
 import { tripXAxis, tripyAxis, userXAxis, useryAxis } from "~/constants";
+import {
+  ColumnsDirective,
+  GridComponent,
+  ColumnDirective,
+} from "@syncfusion/ej2-react-grids";
 
 // export const loader = Sentry.wrapServerLoader(
 //   {
@@ -61,7 +66,7 @@ export async function clientLoader() {
   const mappedUsers: UsersItineraryCount[] = allUsers.users.map((user) => ({
     imageUrl: user.imageUrl,
     name: user.name,
-    count: user.itineraryCount,
+    count: user.itineraryCount ?? Math.floor(Math.random() * 10),
   }));
 
   return {
@@ -80,6 +85,27 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
   const user = loaderData.user as User | null;
   const { dashboardStats, allTrips, userGrowth, tripsByTravelStyle, allUsers } =
     loaderData;
+
+  const trips = allTrips.map((trip) => ({
+    imageUrl: trip.imageUrls[0],
+    name: trip.name,
+    interests: trip.interests,
+  }));
+
+  const userAndTrips = [
+    {
+      title: "Latest user signups",
+      dataSource: allUsers,
+      field: "count",
+      headerText: "Trips created",
+    },
+    {
+      title: "Trips based on interests",
+      dataSource: trips,
+      field: "interests",
+      headerText: "interests",
+    },
+  ];
   return (
     <main className="dashboard wrapper">
       <Header
@@ -127,7 +153,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 lg: grid-cols-2 gap-5">
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <ChartComponent
           id="chart-1"
           primaryXAxis={userXAxis}
@@ -144,6 +170,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
               Tooltip,
             ]}
           />
+
           <SeriesCollectionDirective>
             <SeriesDirective
               dataSource={userGrowth}
@@ -166,6 +193,7 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
             />
           </SeriesCollectionDirective>
         </ChartComponent>
+
         <ChartComponent
           id="chart-2"
           primaryXAxis={tripXAxis}
@@ -195,6 +223,40 @@ const dashboard = ({ loaderData }: Route.ComponentProps) => {
             />
           </SeriesCollectionDirective>
         </ChartComponent>
+      </section>
+      <section className="user-trip wrapper">
+        {userAndTrips.map(({ title, dataSource, field, headerText }, i) => (
+          <div key={i} className="flex flex-col gap-5">
+            <h3 className="p-20-semibold text-dark-100">{title}</h3>
+            <GridComponent dataSource={dataSource} gridLines="None">
+              <ColumnsDirective>
+                <ColumnDirective
+                  field="name"
+                  headerText="Name"
+                  width="200"
+                  textAlign="Left"
+                  template={(props: UserData) => (
+                    <div className="flex items-center gap-1.5 px-4">
+                      <img
+                        src={props.imageUrl}
+                        alt="user"
+                        className="rounded-full size-8 aspect-square"
+                      />
+                      <span>{props.name}</span>
+                    </div>
+                  )}
+                />
+
+                <ColumnDirective
+                  field={field}
+                  headerText={headerText}
+                  width="150"
+                  textAlign="Left"
+                />
+              </ColumnsDirective>
+            </GridComponent>
+          </div>
+        ))}
       </section>
     </main>
   );

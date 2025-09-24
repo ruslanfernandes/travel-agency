@@ -17,7 +17,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     getTripById(tripId),
     getAllTrips(4, 0),
   ]);
-  console.log(trips);
+  // console.log(trips);
 
   return {
     trip,

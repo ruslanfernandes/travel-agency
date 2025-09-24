@@ -40,7 +40,7 @@ const AllUsers = ({ loaderData }: Route.ComponentProps) => {
                 <span>{props.name}</span>
               </div>
             )}
-          />{" "}
+          />
           <ColumnDirective
             field="email"
             headerText="Email"
