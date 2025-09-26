@@ -22,9 +22,13 @@ const PageLayout = () => {
         </button>
         <button
           onClick={() => navigate("/dashboard")}
-          className="w-full sm:w-auto text-lg px-8 py-4 font-semibold"
+          className="px-5 py-2.5 bg-gradient-to-tr from-neutral-100 to-neutral-200 
+text-black font-medium rounded-md border border-neutral-300 
+transition duration-300 
+hover:shadow hover:scale-[1.01] 
+active:scale-95 active:shadow-inner"
         >
-          Dashboard
+          Visit Travel Dashboard (Admins Only)
         </button>
       </div>
 
