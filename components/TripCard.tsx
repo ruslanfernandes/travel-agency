@@ -16,6 +16,7 @@ const TripCard = ({
 }: TripCardProps) => {
   //GET CURRENT PATH
   const path = useLocation();
+  console.log(tags);
   return (
     // both of the first comparisions means theyre on the public facing webstie
     <Link
