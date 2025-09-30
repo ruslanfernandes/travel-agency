@@ -15,11 +15,15 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { allTrips, total } = await getAllTrips(limit, offset);
 
   return {
-    trips: allTrips.map(({ $id, tripDetail, imageUrls }) => ({
-      id: $id,
-      ...parseTripData(tripDetail),
-      imageUrls: imageUrls ?? [],
-    })),
+    trips: allTrips.map(({ $id, tripDetail, imageUrls }) => {
+      const parsed: Partial<Trip> = parseTripData(tripDetail) || {};
+      return {
+        id: $id,
+        ...parsed,
+        itinerary: Array.isArray(parsed.itinerary) ? parsed.itinerary : [],
+        imageUrls: imageUrls ?? [],
+      };
+    }),
     total,
   };
 };
@@ -63,9 +67,9 @@ const Trips = ({ loaderData }: Route.ComponentProps) => {
                 id={id}
                 key={id}
                 name={name}
-                location={itinerary?.[0].location ?? ""}
+                location={itinerary?.[0]?.location || "Unknown"}
                 imageUrl={imageUrls[0]}
-                tags={[interests, travelStyle]}
+                tags={[interests, travelStyle].filter(Boolean)}
                 price={estimatedPrice}
               />
             )

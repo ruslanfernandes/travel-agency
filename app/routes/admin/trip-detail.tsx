@@ -210,7 +210,7 @@ const TripDetail = ({ loaderData }: Route.ComponentProps) => {
                 id={id}
                 key={id}
                 name={name}
-                location={itinerary?.[0].location ?? ""}
+                location={itinerary?.[0]?.location ?? "Unknown location"}
                 imageUrl={imageUrls[0]}
                 tags={[interests, travelStyle]}
                 price={estimatedPrice}
